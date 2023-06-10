@@ -64,13 +64,32 @@
 			},
 		}
 	}
+
+	function share() {
+		const url = window.location.href
+		if (navigator.share) {
+			navigator
+				.share({
+					title: document.title,
+					text: 'Hello World',
+					url: window.location.href,
+				})
+				.then(() => console.log('Successful share'))
+				.catch((error) => {
+					navigator.clipboard.writeText(url)
+					console.log('Error sharing:', error)
+				})
+		} else {
+			navigator.clipboard.writeText(url)
+		}
+	}
 </script>
 
 <h3>Tap to stop streaming</h3>
 {#if localStream}
 	<video use:srcObject={localStream} autoplay playsInline muted={true} />
 {/if}
-<Button color="green">Share Link</Button>
+<Button color="green" on:click={share}>Share Link</Button>
 <Button
 	color="orange"
 	on:click={() => {
