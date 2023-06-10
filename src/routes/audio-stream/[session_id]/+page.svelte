@@ -9,7 +9,7 @@
 
 	const sessionId = $page.params.session_id
 
-	$: if ($userStore.addressOrEns === undefined) {
+	$: if ($userStore?.addressOrEns === undefined) {
 		goto(AUDIO_STREAM_CONNECT(sessionId))
 	}
 </script>
