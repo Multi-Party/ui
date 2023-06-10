@@ -9,6 +9,8 @@
 
 	const uid = ethers.randomBytes(4).toString()
 	const store = adapter.streams
+	let listening = false
+
 	$: streams = $store?.streams ?? []
 	$: listeners = $store?.listeners ?? '?'
 
@@ -46,16 +48,26 @@
 	}
 </script>
 
-{#each streams as stream}
+{#if streams.length > 0}
 	<h3>
 		{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`}'s stream
 	</h3>
-	<Animation />
+	{#if listening}
+		<Animation />
+	{:else}
+		<div class="grow">
+			<button on:click={() => (listening = true)}>Start</button>
+		</div>
+	{/if}
 	<div class="gap">
 		<p class="yellow">{listeners} listeners</p>
 	</div>
 	<Button color="green" on:click={share}>Share Link</Button>
-	<audio use:srcObject={stream} autoplay playsInline muted={false} />
+	{#if listening}
+		{#each streams as stream}
+			<audio use:srcObject={stream} autoplay playsInline muted={false} />
+		{/each}
+	{/if}
 {:else}
 	<div class="flexParrent">
 		<h3>
@@ -64,7 +76,7 @@
 		<h3 class="orange">Join my next talk about hamburgers and violins on June 12th</h3>
 		<Button>Listen to last stream</Button>
 	</div>
-{/each}
+{/if}
 
 <style>
 	.orange {
@@ -101,5 +113,26 @@
 		display: flex;
 		align-items: center;
 		flex-direction: column;
+	}
+	.grow {
+		flex-grow: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+	button {
+		font-family: 'Syne';
+		font-style: normal;
+		font-weight: 600;
+		font-size: 28px;
+		padding: 20px;
+		border-radius: 100%;
+		text-transform: uppercase;
+		border: 5px solid var(--yellow);
+		background-color: var(--orange);
+		color: var(--black);
+		width: 150px;
+		height: 150px;
 	}
 </style>
