@@ -4,6 +4,20 @@
 	import { AUDIO_STREAM } from '$lib/routes'
 
 	let addressOrEns = ''
+
+	function extractENSorAddress(url: string): string | null {
+		// Pattern to match Ethereum addresses and ENS domains
+		const pattern = /\/(0x[a-fA-F0-9]{40}|[a-z0-9]+(\.[a-z0-9]+)*\.eth)$/
+
+		const match = url.match(pattern)
+
+		return match ? match[1] : null
+	}
+
+	$: if (addressOrEns) {
+		const extractedEnsOrAddress = extractENSorAddress(addressOrEns)
+		if (extractedEnsOrAddress) addressOrEns = extractedEnsOrAddress
+	}
 </script>
 
 <div class="flex">
