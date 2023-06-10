@@ -38,8 +38,6 @@
 		if (joinLink) goto(AUDIO_STREAM(joinLink))
 		else goto(AUDIO_STREAM(addressOrEns))
 	}
-
-	console.log($page.url.searchParams.get('address'))
 </script>
 
 <h3>Connect your Ethereum address</h3>

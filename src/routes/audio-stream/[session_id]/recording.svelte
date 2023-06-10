@@ -1,60 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { AUDIO_SERVICE_URL } from '$lib/constants'
 	import { userStore } from '$lib/stores/user'
 	import Button from '$lib/ui/button.svelte'
-	import { Client, LocalStream, type RemoteStream } from 'ion-sdk-js'
-	import { IonSFUJSONRPCSignal } from 'ion-sdk-js/lib/signal/json-rpc-impl'
+	import adapter from '$lib/adapters/audio-stream'
 	import { onMount } from 'svelte'
 
-	let client: Client
-	let localStream: LocalStream | undefined = undefined
 	const sessionId = $page.params.session_id
 	let recording = false
 
-	function join(): Promise<void> {
-		return new Promise((resolve, reject) => {
-			if (client) {
-				resolve()
-			}
-
-			const signal = new IonSFUJSONRPCSignal(AUDIO_SERVICE_URL)
-			client = new Client(signal)
-
-			client.ontrack = (track, stream) => {
-				console.log('Got Track:', track.id, 'of kind:', track.kind, 'for stream:', stream.id)
-
-				if (track.kind !== 'audio') {
-					return
-				}
-			}
-
-			signal.onopen = async () => {
-				if ($userStore.addressOrEns) {
-					await client.join(sessionId, $userStore.addressOrEns)
-					resolve()
-				}
-			}
-		})
-	}
-
-	function publish() {
-		if (client) {
-			LocalStream.getUserMedia({
-				resolution: 'hd',
-				codec: 'h264',
-				audio: true,
-				video: false,
-			}).then((stream) => {
-				client.publish(stream)
-				localStream = stream
-			})
-		}
-	}
-
 	onMount(async () => {
-		await join()
-		publish()
+		if (!$userStore.addressOrEns) {
+			console.error('No user address')
+			return
+		}
+		await adapter.join(sessionId, $userStore.addressOrEns)
+		adapter.broadcast()
 	})
 
 	function srcObject(node: HTMLVideoElement, stream: MediaStream) {
@@ -80,7 +40,7 @@
 				.then(() => console.log('Successful share'))
 				.catch((error) => {
 					navigator.clipboard.writeText(url)
-					console.log('Error sharing:', error)
+					console.error('Error sharing:', error)
 				})
 		} else {
 			navigator.clipboard.writeText(url)
@@ -89,8 +49,8 @@
 </script>
 
 <h3>Tap to stop streaming</h3>
-{#if localStream}
-	<video use:srcObject={localStream} autoplay playsInline muted={true} />
+{#if adapter.localStream}
+	<video use:srcObject={adapter.localStream} autoplay playsInline muted={true} />
 {/if}
 <Button color="green" on:click={share}>Share Link</Button>
 <Button
