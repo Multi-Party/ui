@@ -9,11 +9,12 @@
 	import adapter from '$lib/adapters/audio-stream'
 
 	const sessionId = $page.params.session_id
+	const storedAddress = localStorage.getItem('address')
 
 	$: addressOrEns = $userStore?.addressOrEns
 
-	$: if ($userStore?.addressOrEns === undefined) {
-		goto(AUDIO_STREAM_CONNECT(sessionId))
+	$: if (!addressOrEns && storedAddress === sessionId) {
+		goto(AUDIO_STREAM_CONNECT)
 	}
 
 	onDestroy(() => {
@@ -23,6 +24,6 @@
 
 {#if addressOrEns === sessionId}
 	<Recording {sessionId} {addressOrEns} />
-{:else if addressOrEns !== undefined}
-	<Consuming {sessionId} {addressOrEns} />
+{:else}
+	<Consuming {sessionId} />
 {/if}

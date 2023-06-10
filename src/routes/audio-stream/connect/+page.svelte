@@ -8,6 +8,7 @@
 	import { page } from '$app/stores'
 
 	function navigate(signer: Signer, addressOrEns: string) {
+		localStorage.setItem('address', addressOrEns)
 		userStore.set({ signer, addressOrEns })
 		const joinLink = $page.url.searchParams.get('address')
 		if (joinLink) goto(AUDIO_STREAM(joinLink))

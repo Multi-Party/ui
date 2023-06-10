@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/ui/button.svelte'
 	import { goto } from '$app/navigation'
-	import { AUDIO_STREAM_CONNECT } from '$lib/routes'
+	import { AUDIO_STREAM } from '$lib/routes'
 
 	let addressOrEns = ''
 </script>
@@ -11,7 +11,7 @@
 </div>
 <div class="buttons">
 	<input bind:value={addressOrEns} />
-	<Button disabled={!addressOrEns} on:click={() => goto(AUDIO_STREAM_CONNECT(addressOrEns))}
+	<Button disabled={!addressOrEns} on:click={() => goto(AUDIO_STREAM(addressOrEns))}
 		>Start listening</Button
 	>
 </div>

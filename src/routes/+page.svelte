@@ -7,7 +7,7 @@
 <h1>Ride the wave</h1>
 <h3>Decentralized live streaming for audio etc.</h3>
 <div class="buttons">
-	<Button color="green" on:click={() => goto(AUDIO_STREAM_CONNECT())}>Create stream</Button>
+	<Button color="green" on:click={() => goto(AUDIO_STREAM_CONNECT)}>Create stream</Button>
 	<Button color="orange" on:click={() => goto(AUDIO_STREAM_JOIN)}>Just listen</Button>
 </div>
 

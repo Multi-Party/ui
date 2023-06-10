@@ -3,16 +3,17 @@
 	import adapter from '$lib/adapters/audio-stream'
 	import Button from '$lib/ui/button.svelte'
 	import Animation from '$lib/ui/animation.svelte'
+	import { ethers } from 'ethers'
 
-	export let addressOrEns: string
 	export let sessionId: string
 
+	const uid = ethers.randomBytes(4).toString()
 	const store = adapter.streams
 	$: streams = $store?.streams ?? []
 	$: listeners = $store?.listeners ?? '?'
 
 	onMount(() => {
-		adapter.listen(sessionId, addressOrEns)
+		adapter.listen(sessionId, uid)
 	})
 
 	function srcObject(node: HTMLVideoElement, stream: MediaStream) {
@@ -47,7 +48,7 @@
 
 {#each streams as stream}
 	<h3>
-		{addressOrEns.length < 15 ? addressOrEns : `${addressOrEns.substring(0, 10)}...`}'s stream
+		{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`}'s stream
 	</h3>
 	<Animation />
 	<div class="gap">
@@ -58,8 +59,7 @@
 {:else}
 	<div class="flexParrent">
 		<h3>
-			{addressOrEns.length < 15 ? addressOrEns : `${addressOrEns.substring(0, 10)}...`}'s stream has
-			ended
+			{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`}'s stream has ended
 		</h3>
 		<h3 class="orange">Join my next talk about hamburgers and violins on June 12th</h3>
 		<Button>Listen to last stream</Button>
