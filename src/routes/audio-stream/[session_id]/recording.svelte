@@ -76,9 +76,6 @@
 >
 
 <style>
-	video {
-		display: none;
-	}
 	.gap {
 		gap: 12px;
 		padding: 12px 0px;

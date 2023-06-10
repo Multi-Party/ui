@@ -52,13 +52,13 @@
 	<h3>
 		{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`}'s stream
 	</h3>
-	{#if listening}
-		<Animation />
-	{:else}
-		<div class="grow">
+	<div class="grow">
+		{#if listening}
+			<Animation />
+		{:else}
 			<button on:click={() => (listening = true)}>Start</button>
-		</div>
-	{/if}
+		{/if}
+	</div>
 	<div class="gap">
 		<p class="yellow">{listeners} listeners</p>
 	</div>
