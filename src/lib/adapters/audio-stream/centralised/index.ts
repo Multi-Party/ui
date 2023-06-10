@@ -7,6 +7,7 @@ import { get, writable, type Writable } from 'svelte/store'
 export interface StreamData {
 	streams: RemoteStream[]
 	localStream?: LocalStream
+	listeners?: number
 }
 
 export type StreamStore = Writable<StreamData>

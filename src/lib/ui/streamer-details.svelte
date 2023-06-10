@@ -10,8 +10,8 @@
 	<div class="qr">
 		<QrCode />
 	</div>
-	<div class="name">
-		<div class="grow">
+	<div class="border">
+		<div class="text">
 			{ens ?? `${address.substring(0, 9)} ...`}
 		</div>
 		<div class="flash">
@@ -32,12 +32,7 @@
 		color: var(--orange);
 		gap: 22px;
 	}
-	.name {
-		font-family: 'Syne';
-		font-style: normal;
-		font-weight: 400;
-		font-size: 25px;
-		line-height: 38px;
+	.border {
 		display: flex;
 		flex-grow: 1;
 		justify-content: center;
@@ -48,8 +43,13 @@
 		border-radius: 15px;
 		border: 2px solid var(--orange);
 	}
-	.grow {
+	.text {
 		flex-grow: 1;
+		font-family: 'Syne';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 25px;
+		line-height: 38px;
 	}
 	.flash {
 		margin-right: 5px;
