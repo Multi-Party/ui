@@ -1,11 +1,18 @@
 <script lang="ts">
-	import SvelteQrCode from 'svelte-qrcode'
+	// import SvelteQrCode from 'svelte-qrcode'
 	import QrCode from '$lib/assets/qr-code.svelte'
+	import { onMount } from 'svelte'
 
 	export let source: string
-	let canvasRef: HTMLCanvasElement
-	let src = ''
 	let show = false
+	let width: number
+
+	let SvelteQrCode: any
+
+	onMount(async () => {
+		const module = await import('svelte-qrcode')
+		SvelteQrCode = module.default
+	})
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -15,9 +22,11 @@
 
 {#if show}
 	<div class="root">
-		<div class="wrapper">
+		<div class="wrapper" bind:clientWidth={width}>
 			<p>Screenshot or save this to reach listeners</p>
-			<SvelteQrCode value={source} />
+			{#if SvelteQrCode}
+				<svelte:component this={SvelteQrCode} value={source} background="#ffffe4" size={width} />
+			{/if}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="close" on:click={() => (show = false)}>close</div>
 		</div>
