@@ -4,17 +4,20 @@
 	import Recording from './recording.svelte'
 	import Consuming from './consuming.svelte'
 	import User from '$lib/ui/user.svelte'
+	import { goto } from '$app/navigation'
+	import { AUDIO_STREAM_CONNECT } from '$lib/routes'
 
 	const sessionId = $page.params.session_id
+
+	$: if ($userStore.addressOrEns === undefined) {
+		goto(AUDIO_STREAM_CONNECT(sessionId))
+	}
 </script>
 
-{#if $userStore.addressOrEns !== undefined}
-	<User>{$userStore.addressOrEns}</User>
-{/if}
+<User>{$userStore.addressOrEns}</User>
+
 {#if $userStore.addressOrEns === sessionId}
 	<Recording />
 {:else if $userStore.addressOrEns !== undefined}
 	<Consuming />
-{:else}
-	<h3>There is no wallet, this will be handled better...</h3>
 {/if}
