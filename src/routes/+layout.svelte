@@ -26,12 +26,12 @@
 		height: 100vh;
 		height: 100dvh;
 		width: 100vw;
-		background-color: black;
+		background-color: #1c1c1c;
 	}
 
 	.wrapper {
-		max-width: 390px;
-		max-height: 844px;
+		max-width: 500px;
+		max-height: 1280px;
 		width: 100%;
 		height: 100%;
 		background-color: #1c1c1c;
@@ -41,7 +41,7 @@
 		justify-content: stretch;
 		text-align: center;
 		padding: 20px;
-		gap: 22px;
+		gap: 15px;
 	}
 	.logo {
 		display: flex;

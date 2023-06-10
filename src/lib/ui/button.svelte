@@ -11,7 +11,7 @@
 		font-style: normal;
 		font-weight: 600;
 		font-size: 28px;
-		padding: 24px;
+		padding: 20px;
 		border-radius: 12px;
 		text-transform: uppercase;
 		border: none;

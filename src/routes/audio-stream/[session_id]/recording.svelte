@@ -59,8 +59,9 @@
 <div class={localStream ? '' : 'hide'}>
 	<Animation />
 	<div class="gap">
-		<p class={recording ? '' : 'hide'}>recording</p>
-		<p class="yellow">{listeners} listeners</p>
+		<p>
+			<span class="yellow">{listeners} listeners </span>{#if recording} | recording {/if}
+		</p>
 	</div>
 	{#if localStream}
 		<video use:srcObject={localStream} autoplay playsInline muted={true} />
@@ -79,8 +80,8 @@
 		display: none;
 	}
 	.gap {
-		gap: 24px;
-		padding: 24px 0px;
+		gap: 12px;
+		padding: 12px 0px;
 		display: flex;
 		align-items: center;
 		flex-direction: column;
