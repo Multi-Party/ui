@@ -20,10 +20,10 @@
 	})
 </script>
 
-<User>{$userStore.addressOrEns}</User>
+<User>{$userStore?.addressOrEns}</User>
 
-{#if $userStore.addressOrEns === sessionId}
+{#if $userStore?.addressOrEns === sessionId}
 	<Recording />
-{:else if $userStore.addressOrEns !== undefined}
+{:else if $userStore?.addressOrEns !== undefined}
 	<Consuming />
 {/if}
