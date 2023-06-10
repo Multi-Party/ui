@@ -11,7 +11,7 @@
 
 	const store = adapter.streams
 	$: localStream = $store?.localStream
-	$: listeners = $store?.listeners ?? 0
+	$: listeners = $store?.listeners ?? '?'
 
 	let recording = false
 
