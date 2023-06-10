@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte'
 	import adapter from '$lib/adapters/audio-stream'
 	import Button from '$lib/ui/button.svelte'
+	import Animation from '$lib/ui/animation.svelte'
 
 	export let addressOrEns: string
 	export let sessionId: string
@@ -26,9 +27,16 @@
 </script>
 
 {#each streams as stream}
-	<h3>{addressOrEns}'s stream</h3>
+	<h3>{sessionId}'s stream</h3>
+	<Animation />
 	<video use:srcObject={stream} autoplay playsInline muted={false} />
 {:else}
 	<h3>{addressOrEns}is resting, so no live streams :(</h3>
 	<Button>Listen to last stream</Button>
 {/each}
+
+<style>
+	video {
+		display: none;
+	}
+</style>

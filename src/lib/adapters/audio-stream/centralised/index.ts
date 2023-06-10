@@ -6,6 +6,7 @@ import { get, writable, type Writable } from 'svelte/store'
 
 export interface StreamData {
 	streams: RemoteStream[]
+	localStream?: LocalStream
 }
 
 export type StreamStore = Writable<StreamData>
@@ -16,7 +17,6 @@ function createStreamStore(): StreamStore {
 
 export class Centralised implements AudioStreamAdapter {
 	public client: Client | undefined
-	public localStream: LocalStream | undefined
 	public streams: StreamStore = createStreamStore()
 
 	async join(sessionId: string, uid: string): Promise<void> {
@@ -81,6 +81,7 @@ export class Centralised implements AudioStreamAdapter {
 	}
 	leave(): void {
 		if (this.client) {
+			console.log('Disconnecting stream')
 			this.client.close()
 			this.client = undefined
 		}
@@ -96,7 +97,7 @@ export class Centralised implements AudioStreamAdapter {
 			})
 
 			this.client.publish(stream)
-			this.localStream = stream
+			this.streams.update((s) => ({ ...s, localStream: stream }))
 		} else {
 			console.error('I am too early')
 		}

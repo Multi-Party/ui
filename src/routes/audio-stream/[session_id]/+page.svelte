@@ -8,8 +8,11 @@
 	import { AUDIO_STREAM_CONNECT } from '$lib/routes'
 	import { onDestroy } from 'svelte'
 	import adapter from '$lib/adapters/audio-stream'
+	import StreamerDetails from '$lib/ui/streamer-details.svelte'
 
 	const sessionId = $page.params.session_id
+
+	$: addressOrEns = $userStore?.addressOrEns
 
 	$: if ($userStore?.addressOrEns === undefined) {
 		goto(AUDIO_STREAM_CONNECT(sessionId))
@@ -20,10 +23,9 @@
 	})
 </script>
 
-<User>{$userStore?.addressOrEns}</User>
-
-{#if $userStore?.addressOrEns === sessionId}
-	<Recording {sessionId} addressOrEns={$userStore.addressOrEns} />
-{:else if $userStore?.addressOrEns !== undefined}
-	<Consuming {sessionId} addressOrEns={$userStore.addressOrEns} />
+{#if addressOrEns === sessionId}
+	<StreamerDetails address={addressOrEns} />
+	<Recording {sessionId} {addressOrEns} />
+{:else if addressOrEns !== undefined}
+	<Consuming {sessionId} {addressOrEns} />
 {/if}

@@ -1,13 +1,17 @@
 <script lang="ts">
 	import '@total-typescript/ts-reset'
 	import '@fontsource/syne' // Defaults to weight 400 with all styles included.
+	import '@fontsource/syne/600.css'
+	import '@fontsource/syne/700.css'
 	import './styles.css'
 	import Logo from '$lib/assets/logo.svelte'
+	import { goto } from '$app/navigation'
+	import { HOME } from '$lib/routes'
 </script>
 
 <div class="root">
 	<div class="wrapper">
-		<div class="logo"><Logo /></div>
+		<div class="logo" on:click={() => goto(HOME)}><Logo /></div>
 		<slot />
 	</div>
 </div>
@@ -42,5 +46,6 @@
 		display: flex;
 		justify-content: center;
 		text-align: center;
+		cursor: pointer;
 	}
 </style>

@@ -7,23 +7,21 @@
 
 <style>
 	button {
-		border: none;
-		color: white;
-		padding: 15px 32px;
-		display: flex;
-		align-items: center;
-		text-align: center;
-		text-transform: uppercase;
 		font-family: 'Syne';
 		font-style: normal;
 		font-weight: 600;
 		font-size: 28px;
+		padding: 24px;
 		border-radius: 12px;
+		text-transform: uppercase;
+		border: none;
 	}
 	.green {
 		background-color: var(--green);
+		color: var(--white);
 	}
 	.orange {
 		background-color: var(--orange);
+		color: var(--black);
 	}
 </style>
