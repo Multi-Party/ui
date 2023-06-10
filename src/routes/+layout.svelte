@@ -11,6 +11,7 @@
 
 <div class="root">
 	<div class="wrapper">
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div class="logo" on:click={() => goto(HOME)}><Logo /></div>
 		<slot />
 	</div>

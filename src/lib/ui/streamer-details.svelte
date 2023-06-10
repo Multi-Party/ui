@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import Flash from '$lib/assets/flash.svelte'
-	import QrCode from '$lib/assets/qr-code.svelte'
+	import QrModal from '$lib/ui/qr-modal.svelte'
 
 	export let address: string
 	export let ens: string | undefined = undefined
@@ -8,7 +9,7 @@
 
 <div class="root">
 	<div class="qr">
-		<QrCode />
+		<QrModal source={$page.url.href} />
 	</div>
 	<div class="border">
 		<div class="text">
