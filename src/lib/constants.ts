@@ -1,1 +1,1 @@
-export const AUDIO_SERVICE_URL = 'ws://127.0.0.1:8454/ws'
+export const AUDIO_SERVICE_URL = 'wss://143-42-29-37.ip.linodeusercontent.com/ws'
