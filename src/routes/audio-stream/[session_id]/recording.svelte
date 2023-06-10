@@ -20,7 +20,7 @@
 		adapter.broadcast()
 	})
 
-	function srcObject(node: HTMLVideoElement, stream: MediaStream) {
+	function srcObject(node: HTMLAudioElement, stream: MediaStream) {
 		node.srcObject = stream
 		return {
 			update(newStream: MediaStream) {
@@ -64,7 +64,7 @@
 		</p>
 	</div>
 	{#if localStream}
-		<video use:srcObject={localStream} autoplay playsInline muted={true} />
+		<audio use:srcObject={localStream} autoplay playsInline muted={true} />
 	{/if}
 </div>
 <Button color="green" on:click={share}>Share Link</Button>

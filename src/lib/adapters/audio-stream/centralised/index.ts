@@ -17,7 +17,7 @@ function createStreamStore(): StreamStore {
 }
 
 export class Centralised implements AudioStreamAdapter {
-	public client: Client | undefined
+	private client: Client | undefined
 	public streams: StreamStore = createStreamStore()
 	private poll: ReturnType<typeof setInterval> | undefined
 
@@ -67,7 +67,7 @@ export class Centralised implements AudioStreamAdapter {
 			signal.onopen = async () => {
 				if (this.client) {
 					await this.client.join(sessionId, uid)
-					resolve()
+					setTimeout(resolve, 1000)
 				}
 			}
 		})
@@ -112,6 +112,7 @@ export class Centralised implements AudioStreamAdapter {
 		this.stopPolling()
 		if (this.client) {
 			console.log('Disconnecting stream')
+			this.client.leave()
 			this.client.close()
 			this.client = undefined
 		}

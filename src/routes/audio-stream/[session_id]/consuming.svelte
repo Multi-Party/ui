@@ -16,7 +16,7 @@
 		adapter.listen(sessionId, uid)
 	})
 
-	function srcObject(node: HTMLVideoElement, stream: MediaStream) {
+	function srcObject(node: HTMLAudioElement, stream: MediaStream) {
 		node.srcObject = stream
 		return {
 			update(newStream: MediaStream) {
@@ -55,7 +55,7 @@
 		<p class="yellow">{listeners} listeners</p>
 	</div>
 	<Button color="green" on:click={share}>Share Link</Button>
-	<video use:srcObject={stream} autoplay playsInline muted={false} />
+	<audio use:srcObject={stream} autoplay playsInline muted={false} />
 {:else}
 	<div class="flexParrent">
 		<h3>
@@ -67,9 +67,6 @@
 {/each}
 
 <style>
-	video {
-		display: none;
-	}
 	.orange {
 		color: var(--orange);
 	}
