@@ -56,7 +56,7 @@
 {:else}
 	<p>Starting stream...</p>
 {/if}
-<div class={localStream ? '' : 'hide'}>
+<div class={localStream ? 'grow' : 'grow hide'}>
 	<Animation />
 	<div class="gap">
 		<p>
@@ -85,6 +85,14 @@
 		display: flex;
 		align-items: center;
 		flex-direction: column;
+	}
+
+	.grow {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex-grow: 1;
+		justify-content: center;
 	}
 
 	.hide {

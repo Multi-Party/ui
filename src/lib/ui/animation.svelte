@@ -20,8 +20,8 @@
 			controls={false}
 			renderer="svg"
 			background="transparent"
-			height={222}
-			width={222}
+			height={150}
+			width={150}
 			controlsLayout={[]}
 		/>
 	</div>
@@ -31,5 +31,7 @@
 	.animation {
 		display: flex;
 		justify-content: center;
+		align-items: center;
+		flex-grow: 1;
 	}
 </style>

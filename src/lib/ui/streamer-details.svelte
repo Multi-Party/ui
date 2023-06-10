@@ -22,16 +22,17 @@
 </div>
 
 <style>
-	.qr {
-		margin: 0px 5px;
-	}
 	.root {
 		display: flex;
 		flex-direction: row;
+		justify-content: center;
 		align-items: center;
 		text-align: center;
 		color: var(--orange);
 		gap: 22px;
+	}
+	.qr {
+		margin: 0px 5px;
 	}
 	.border {
 		display: flex;
