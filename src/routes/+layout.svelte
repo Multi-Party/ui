@@ -2,11 +2,12 @@
 	import '@total-typescript/ts-reset'
 	import '@fontsource/syne' // Defaults to weight 400 with all styles included.
 	import './styles.css'
+	import Logo from '$lib/assets/logo.svelte'
 </script>
 
 <div class="root">
 	<div class="wrapper">
-		<p class="p1">[logotype here]</p>
+		<div class="logo"><Logo /></div>
 		<slot />
 	</div>
 </div>
@@ -36,5 +37,10 @@
 		text-align: center;
 		padding: 20px;
 		gap: 22px;
+	}
+	.logo {
+		display: flex;
+		justify-content: center;
+		text-align: center;
 	}
 </style>
