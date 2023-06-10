@@ -2,11 +2,23 @@ import { AUDIO_SERVICE_URL } from '$lib/constants'
 import { Client, LocalStream, type RemoteStream } from 'ion-sdk-js'
 import { IonSFUJSONRPCSignal } from 'ion-sdk-js/lib/signal/json-rpc-impl'
 import type { AudioStreamAdapter } from '..'
+import { get, writable, type Writable } from 'svelte/store'
+
+export interface StreamData {
+	streams:  RemoteStream[]
+}
+
+export type StreamStore = Writable<StreamData>
+
+function createStreamStore(): StreamStore {
+	return writable<StreamData>({streams: []})
+}
+
 
 export class Centralised implements AudioStreamAdapter {
 	public client: Client | undefined
 	public localStream: LocalStream | undefined
-	public streams: RemoteStream[] = []
+	public streams: StreamStore = createStreamStore()
 
 	async join(sessionId: string, uid: string): Promise<void> {
 		return new Promise((resolve) => {
@@ -48,16 +60,17 @@ export class Centralised implements AudioStreamAdapter {
 				return
 			}
 
-			const found = this.streams.find((s) => s.id === stream.id)
+			const str = get(this.streams)?.streams ?? []
+			const found = str.find((s) => s.id === stream.id)
 
 			if (!found) {
 				stream.onremovetrack = () => {
 					console.log('stream removed', stream.id)
-					this.streams = this.streams.filter((s) => s.id !== stream.id)
+					this.streams.update((s) => ({streams: s.streams.filter((s) => s.id !== stream.id)}))
 				}
 
 				console.log('stream added', stream.id)
-				this.streams = [...this.streams, stream]
+				this.streams.update((s) => ({streams: [...s.streams, stream]}))
 			}
 		}
 

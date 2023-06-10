@@ -23,7 +23,7 @@
 <User>{$userStore?.addressOrEns}</User>
 
 {#if $userStore?.addressOrEns === sessionId}
-	<Recording />
+	<Recording {sessionId} addressOrEns={$userStore.addressOrEns} />
 {:else if $userStore?.addressOrEns !== undefined}
-	<Consuming />
+	<Consuming {sessionId} addressOrEns={$userStore.addressOrEns} />
 {/if}

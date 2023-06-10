@@ -1,10 +1,10 @@
 import type { Client, LocalStream, RemoteStream } from 'ion-sdk-js'
-import { Centralised } from './centralised'
+import { Centralised, type StreamStore } from './centralised'
 
 export interface AudioStreamAdapter {
 	client: Client | undefined
 	localStream: LocalStream | undefined
-	streams: RemoteStream[]
+	streams: StreamStore
 
 	join(sessionId: string, uid: string): Promise<void>
 	listen(sessionId: string, uid: string): Promise<void>

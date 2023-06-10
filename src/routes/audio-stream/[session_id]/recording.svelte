@@ -1,19 +1,15 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-	import { userStore } from '$lib/stores/user'
 	import Button from '$lib/ui/button.svelte'
 	import adapter from '$lib/adapters/audio-stream'
 	import { onMount } from 'svelte'
 
-	const sessionId = $page.params.session_id
+	export let addressOrEns: string
+	export let sessionId: string
+
 	let recording = false
 
 	onMount(async () => {
-		if (!$userStore.addressOrEns) {
-			console.error('No user address')
-			return
-		}
-		await adapter.join(sessionId, $userStore.addressOrEns)
+		await adapter.join(sessionId, addressOrEns)
 		adapter.broadcast()
 	})
 

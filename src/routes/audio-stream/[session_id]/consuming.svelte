@@ -1,15 +1,16 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-	import { userStore } from '$lib/stores/user'
 	import { onMount } from 'svelte'
 	import adapter from '$lib/adapters/audio-stream'
+	import Button from '$lib/ui/button.svelte'
+
+	export let addressOrEns: string
+	export let sessionId: string
+
+	const store = adapter.streams
+	$: streams = $store?.streams ?? []
 
 	onMount(() => {
-		const sessionId = $page.params.session_id
-		const uid = $userStore.addressOrEns
-
-		if (uid) adapter.listen(sessionId, uid)
-		else console.error('No user address')
+		adapter.listen(sessionId, addressOrEns)
 	})
 
 	function srcObject(node: HTMLVideoElement, stream: MediaStream) {
@@ -24,8 +25,10 @@
 	}
 </script>
 
-<p>Consumer</p>
-<p>Address = {$userStore.addressOrEns}</p>
-{#each adapter.streams as stream (stream.id)}
+{#each streams as stream}
+	<h3>{addressOrEns}'s stream</h3>
 	<video use:srcObject={stream} autoplay playsInline muted={false} />
+{:else}
+	<h3>{addressOrEns}is resting, so no live streams :(</h3>
+	<Button>Listen to last stream</Button>
 {/each}
