@@ -5,15 +5,14 @@ import type { AudioStreamAdapter } from '..'
 import { get, writable, type Writable } from 'svelte/store'
 
 export interface StreamData {
-	streams:  RemoteStream[]
+	streams: RemoteStream[]
 }
 
 export type StreamStore = Writable<StreamData>
 
 function createStreamStore(): StreamStore {
-	return writable<StreamData>({streams: []})
+	return writable<StreamData>({ streams: [] })
 }
-
 
 export class Centralised implements AudioStreamAdapter {
 	public client: Client | undefined
@@ -66,11 +65,11 @@ export class Centralised implements AudioStreamAdapter {
 			if (!found) {
 				stream.onremovetrack = () => {
 					console.log('stream removed', stream.id)
-					this.streams.update((s) => ({streams: s.streams.filter((s) => s.id !== stream.id)}))
+					this.streams.update((s) => ({ streams: s.streams.filter((s) => s.id !== stream.id) }))
 				}
 
 				console.log('stream added', stream.id)
-				this.streams.update((s) => ({streams: [...s.streams, stream]}))
+				this.streams.update((s) => ({ streams: [...s.streams, stream] }))
 			}
 		}
 
