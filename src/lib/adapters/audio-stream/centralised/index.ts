@@ -1,4 +1,4 @@
-import { AUDIO_SERVICE_URL } from '$lib/constants'
+import { PUBLIC_AUDIO_SERVICE_URL } from '$env/static/public'
 import { Client, LocalStream, type RemoteStream } from 'ion-sdk-js'
 import { IonSFUJSONRPCSignal } from 'ion-sdk-js/lib/signal/json-rpc-impl'
 import type { AudioStreamAdapter } from '..'
@@ -25,7 +25,7 @@ export class Centralised implements AudioStreamAdapter {
 				resolve()
 			}
 
-			const signal = new IonSFUJSONRPCSignal(AUDIO_SERVICE_URL)
+			const signal = new IonSFUJSONRPCSignal(PUBLIC_AUDIO_SERVICE_URL)
 			this.client = new Client(signal)
 
 			this.client.ontrack = (track, stream) => {
@@ -49,7 +49,7 @@ export class Centralised implements AudioStreamAdapter {
 			return
 		}
 
-		const signal = new IonSFUJSONRPCSignal(AUDIO_SERVICE_URL)
+		const signal = new IonSFUJSONRPCSignal(PUBLIC_AUDIO_SERVICE_URL)
 		this.client = new Client(signal)
 
 		this.client.ontrack = (track, stream) => {
