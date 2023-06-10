@@ -1,4 +1,4 @@
-import { PUBLIC_AUDIO_SERVICE_URL } from '$env/static/public'
+import { PUBLIC_AUDIO_SERVICE_LISTENERS_URL, PUBLIC_AUDIO_SERVICE_URL } from '$env/static/public'
 import { Client, LocalStream, type RemoteStream } from 'ion-sdk-js'
 import { IonSFUJSONRPCSignal } from 'ion-sdk-js/lib/signal/json-rpc-impl'
 import type { AudioStreamAdapter } from '..'
@@ -19,8 +19,35 @@ function createStreamStore(): StreamStore {
 export class Centralised implements AudioStreamAdapter {
 	public client: Client | undefined
 	public streams: StreamStore = createStreamStore()
+	private poll: ReturnType<typeof setInterval> | undefined
+
+	startPolling(sessionId: string): void {
+		this.stopPolling()
+
+		async function poll(store: StreamStore) {
+			try {
+				const res = await fetch(`${PUBLIC_AUDIO_SERVICE_LISTENERS_URL}/${sessionId}`)
+				const data = (await res.json()) as any
+				const listeners = data?.n_peers
+
+				if (listeners) store.update((s) => ({ ...s, listeners }))
+			} catch (error) {
+				console.error(error)
+			}
+		}
+		poll(this.streams)
+		this.poll = setInterval(() => poll(this.streams), 5000)
+	}
+
+	stopPolling(): void {
+		if (this.poll) {
+			clearInterval(this.poll)
+			this.poll = undefined
+		}
+	}
 
 	async join(sessionId: string, uid: string): Promise<void> {
+		this.startPolling(sessionId)
 		return new Promise((resolve) => {
 			if (this.client) {
 				resolve()
@@ -46,6 +73,7 @@ export class Centralised implements AudioStreamAdapter {
 		})
 	}
 	async listen(sessionId: string, uid: string): Promise<void> {
+		this.startPolling(sessionId)
 		if (this.client) {
 			return
 		}
@@ -81,6 +109,7 @@ export class Centralised implements AudioStreamAdapter {
 		}
 	}
 	leave(): void {
+		this.stopPolling()
 		if (this.client) {
 			console.log('Disconnecting stream')
 			this.client.close()
