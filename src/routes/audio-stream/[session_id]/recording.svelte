@@ -12,27 +12,30 @@
 	const sessionId = $page.params.session_id
 	let recording = false
 
-	function join() {
-		if (client) {
-			return
-		}
-
-		const signal = new IonSFUJSONRPCSignal(AUDIO_SERVICE_URL)
-		client = new Client(signal)
-
-		client.ontrack = (track, stream) => {
-			console.log('Got Track:', track.id, 'of kind:', track.kind, 'for stream:', stream.id)
-
-			if (track.kind !== 'audio') {
-				return
+	function join(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			if (client) {
+				resolve()
 			}
-		}
 
-		signal.onopen = async () => {
-			if ($userStore.addressOrEns) {
-				await client.join(sessionId, $userStore.addressOrEns)
+			const signal = new IonSFUJSONRPCSignal(AUDIO_SERVICE_URL)
+			client = new Client(signal)
+
+			client.ontrack = (track, stream) => {
+				console.log('Got Track:', track.id, 'of kind:', track.kind, 'for stream:', stream.id)
+
+				if (track.kind !== 'audio') {
+					return
+				}
 			}
-		}
+
+			signal.onopen = async () => {
+				if ($userStore.addressOrEns) {
+					await client.join(sessionId, $userStore.addressOrEns)
+					resolve()
+				}
+			}
+		})
 	}
 
 	function publish() {
@@ -49,8 +52,8 @@
 		}
 	}
 
-	onMount(() => {
-		join()
+	onMount(async () => {
+		await join()
 		publish()
 	})
 
