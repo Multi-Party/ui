@@ -18,12 +18,13 @@ html {
 	line-height: 1.25;
 	-webkit-text-size-adjust: 100%;
 	overflow-wrap: anywhere;
-	background-color: var(--black);
+	background-color: #1c1c1c;
 }
 
 body {
 	margin: 0;
 	padding: 0;
+	background-color: #1c1c1c;
 }
 
 *,
