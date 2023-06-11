@@ -21,6 +21,9 @@
 		"@total-typescript/ts-reset": "^0.4.2",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
+		"@wagmi/core": "^1.1.1",
+		"@web3modal/ethereum": "^2.4.5",
+		"@web3modal/html": "^2.4.5",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.26.0",
@@ -34,6 +37,7 @@
 		"svelte-preprocess": "^5.0.4",
 		"svelte-qrcode": "^1.0.0",
 		"typescript": "^5.0.0",
+		"viem": "^1.0.2",
 		"vite": "^4.3.0",
 		"vitest": "^0.25.3"
 	},

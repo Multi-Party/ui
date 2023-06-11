@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { type HDNodeWallet, Wallet, type Signer } from 'ethers'
-	import { connectWallet } from '$lib/adapters/blockchain'
+	import { ethereumClient, web3modal } from '$lib/adapters/blockchain'
 	import Button from '$lib/ui/button.svelte'
 	import { userStore } from '$lib/stores/user'
 	import { goto } from '$app/navigation'
 	import { AUDIO_STREAM } from '$lib/routes'
 	import { page } from '$app/stores'
 
-	function navigate(signer: Signer, addressOrEns: string) {
+	function navigate(addressOrEns: string, signer?: Signer) {
 		localStorage.setItem('address', addressOrEns)
 		userStore.set({ signer, addressOrEns })
 		const joinLink = $page.url.searchParams.get('address')
@@ -15,26 +15,24 @@
 		else goto(AUDIO_STREAM(addressOrEns))
 	}
 
-	async function connect() {
-		const signer = await connectWallet()
-		const address = await signer.getAddress()
-
-		// TODO: get the ENS name if available
-		navigate(signer, address)
-	}
+	ethereumClient.watchAccount((state) => {
+		if (state && state.address) {
+			navigate(state.address)
+		}
+	})
 
 	async function createWallet() {
-		const mnemonic = localStorage.getItem('mnemonic')
+		const mnemonic = localStorage.getItem('castaway-mnemonic')
 		let wallet: HDNodeWallet
 		if (mnemonic) wallet = Wallet.fromPhrase(mnemonic)
 		else wallet = Wallet.createRandom()
 
-		if (wallet.mnemonic) localStorage.setItem('mnemonic', wallet.mnemonic.phrase)
+		if (wallet.mnemonic) localStorage.setItem('castaway-mnemonic', wallet.mnemonic.phrase)
 
 		const address = wallet.address
 
 		// TODO: get the ENS name if available
-		navigate(wallet, address)
+		navigate(address, wallet)
 	}
 </script>
 
@@ -42,7 +40,7 @@
 	<h3>Connect your web3 profile</h3>
 </div>
 <div class="buttons">
-	<Button on:click={connect}>Connect</Button>
+	<Button on:click={() => web3modal.openModal()}>Connect</Button>
 	<Button color="orange" on:click={createWallet}>I don't have one</Button>
 </div>
 

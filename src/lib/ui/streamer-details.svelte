@@ -5,13 +5,15 @@
 
 	export let address: string
 	export let ens: string | undefined = undefined
+	export let disconnect: () => void | Promise<void>
 </script>
 
 <div class="root">
 	<div class="qr">
 		<QrModal source={$page.url.href} />
 	</div>
-	<div class="border">
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div class="border" on:click={disconnect}>
 		<div class="text">
 			{ens ?? `${address.substring(0, 9)} ...`}
 		</div>
