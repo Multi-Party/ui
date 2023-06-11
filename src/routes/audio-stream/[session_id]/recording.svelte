@@ -8,6 +8,7 @@
 	import { ethereumClient, web3modal } from '$lib/adapters/blockchain'
 	import { userStore } from '$lib/stores/user'
 	import { goto } from '$app/navigation'
+	import { PUBLIC_ETHPRAGUE_STREAM_ENS } from '$env/static/public'
 
 	export let addressOrEns: string
 	export let sessionId: string
@@ -56,7 +57,8 @@
 		if (state && state.address) {
 			try {
 				const ens = await ethereumClient.fetchEnsName({ address: state.address, chainId: 1 })
-				if (ens) goto(AUDIO_STREAM(ens))
+				if (ens === PUBLIC_ETHPRAGUE_STREAM_ENS) goto(AUDIO_STREAM('ethprague.eth'))
+				else if (ens) goto(AUDIO_STREAM(ens))
 				else goto(AUDIO_STREAM(state.address))
 			} catch (e) {
 				goto(AUDIO_STREAM(state.address))

@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation'
 	import { AUDIO_STREAM } from '$lib/routes'
 	import { page } from '$app/stores'
+	import { PUBLIC_ETHPRAGUE_STREAM_ENS } from '$env/static/public'
 
 	function navigate(addressOrEns: string, signer?: Signer) {
 		localStorage.setItem('address', addressOrEns)
@@ -19,7 +20,8 @@
 		if (state && state.address) {
 			try {
 				const ens = await ethereumClient.fetchEnsName({ address: state.address, chainId: 1 })
-				if (ens) navigate(ens)
+				if (ens === PUBLIC_ETHPRAGUE_STREAM_ENS) navigate('ethprague.eth')
+				else if (ens) navigate(ens)
 				else navigate(state.address)
 			} catch (e) {
 				navigate(state.address)
