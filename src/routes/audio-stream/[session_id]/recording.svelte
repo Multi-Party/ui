@@ -52,9 +52,15 @@
 		}
 	}
 
-	ethereumClient.watchAccount((state) => {
+	ethereumClient.watchAccount(async (state) => {
 		if (state && state.address) {
-			goto(AUDIO_STREAM(state.address))
+			try {
+				const ens = await ethereumClient.fetchEnsName({ address: state.address, chainId: 1 })
+				if (ens) goto(AUDIO_STREAM(ens))
+				else goto(AUDIO_STREAM(state.address))
+			} catch (e) {
+				goto(AUDIO_STREAM(state.address))
+			}
 		}
 		if (state) {
 			userStore.set({})
