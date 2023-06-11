@@ -2,6 +2,7 @@
 	import { page } from '$app/stores'
 	import Flash from '$lib/assets/flash.svelte'
 	import QrModal from '$lib/ui/qr-modal.svelte'
+	import { formatAddressOrEns } from '$lib/utils'
 
 	export let address: string
 	export let ens: string | undefined = undefined
@@ -15,7 +16,7 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="border" on:click={disconnect}>
 		<div class="text">
-			{ens ?? `${address.substring(0, 9)} ...`}
+			{formatAddressOrEns(ens ?? address)}
 		</div>
 		<div class="flash">
 			<Flash />

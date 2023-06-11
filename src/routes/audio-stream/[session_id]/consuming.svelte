@@ -4,6 +4,7 @@
 	import Button from '$lib/ui/button.svelte'
 	import Animation from '$lib/ui/animation.svelte'
 	import { ethers } from 'ethers'
+	import { formatAddressOrEns } from '$lib/utils'
 
 	export let sessionId: string
 
@@ -50,7 +51,7 @@
 
 {#if streams.length > 0}
 	<h3>
-		{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`}'s stream
+		{formatAddressOrEns(sessionId)}'s stream
 	</h3>
 	<div class="grow">
 		{#if listening}
@@ -71,8 +72,7 @@
 {:else}
 	<div class="flexParrent">
 		<h3>
-			{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`} is not live right now
-			but left a message.
+			{formatAddressOrEns(sessionId)} is not live right now but left a message.
 		</h3>
 		<h3 class="orange">
 			Hey there! Although I'm not live at the moment, remember that I love you very much. Check out
