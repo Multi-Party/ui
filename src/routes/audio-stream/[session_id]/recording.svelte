@@ -4,7 +4,10 @@
 	import { onMount } from 'svelte'
 	import Animation from '$lib/ui/animation.svelte'
 	import StreamerDetails from '$lib/ui/streamer-details.svelte'
-	import { HOME } from '$lib/routes'
+	import { AUDIO_STREAM, HOME } from '$lib/routes'
+	import { ethereumClient, web3modal } from '$lib/adapters/blockchain'
+	import { userStore } from '$lib/stores/user'
+	import { goto } from '$app/navigation'
 
 	export let addressOrEns: string
 	export let sessionId: string
@@ -48,9 +51,26 @@
 			navigator.clipboard.writeText(url)
 		}
 	}
+
+	ethereumClient.watchAccount((state) => {
+		if (state && state.address) {
+			goto(AUDIO_STREAM(state.address))
+		}
+		if (state) {
+			userStore.set({})
+		}
+	})
+
+	function disconnect() {
+		if ($userStore.signer) {
+			userStore.set({})
+		} else {
+			web3modal.openModal()
+		}
+	}
 </script>
 
-<StreamerDetails address={addressOrEns} />
+<StreamerDetails address={addressOrEns} {disconnect} />
 {#if localStream}
 	<a href={HOME}>(tap to stop streaming)</a>
 {:else}
