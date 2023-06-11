@@ -71,10 +71,14 @@
 {:else}
 	<div class="flexParrent">
 		<h3>
-			{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`}'s stream has ended
+			{sessionId.length < 15 ? sessionId : `${sessionId.substring(0, 10)}...`} is not live right now
+			but left a message.
 		</h3>
-		<h3 class="orange">Join my next talk about hamburgers and violins on June 12th</h3>
-		<Button>Listen to last stream</Button>
+		<h3 class="orange">
+			Hey there! Although I'm not live at the moment, remember that I love you very much. Check out
+			my cast at june 11 about hamburger recipies
+		</h3>
+		<Button>Listen to most recent cast</Button>
 	</div>
 {/if}
 
