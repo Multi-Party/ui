@@ -15,9 +15,15 @@
 		else goto(AUDIO_STREAM(addressOrEns))
 	}
 
-	ethereumClient.watchAccount((state) => {
+	ethereumClient.watchAccount(async (state) => {
 		if (state && state.address) {
-			navigate(state.address)
+			try {
+				const ens = await ethereumClient.fetchEnsName({ address: state.address, chainId: 1 })
+				if (ens) navigate(ens)
+				else navigate(state.address)
+			} catch (e) {
+				navigate(state.address)
+			}
 		}
 	})
 
